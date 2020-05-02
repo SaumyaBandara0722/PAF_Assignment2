@@ -8,11 +8,11 @@ import bean.AppointmentBean;
 import util.DBConnection;
 
 public class Appointment {
-	
+
 	Schedule sch = new Schedule();
 	DBConnection dbObj = new DBConnection();
-		
-	//method to insert data
+
+	// method to insert data
 	public String insertDetails(String PatientID, String DueDate, String ScheduleId) {
 		String output = "";
 		try {
@@ -29,12 +29,12 @@ public class Appointment {
 			preparedStmt.setString(2, PatientID);
 			preparedStmt.setString(3, DueDate);
 			preparedStmt.setString(4, ScheduleId);
-			//preparedStmt.setBoolean(5, false);
-									
-			// execute the statement 			
+			// preparedStmt.setBoolean(5, false);
+
+			// execute the statement
 			preparedStmt.execute();
 			output = "Inserted successfully";
-			
+
 		} catch (Exception e) {
 			output = "Error while inserting.Can't add a child row";
 			System.err.println(e.getMessage());
@@ -42,20 +42,19 @@ public class Appointment {
 		return output;
 	}
 
-	
-	//method to read database
+	// method to read database
 	public String readDetails() {
 		String output = "";
 		AppointmentBean docbean = new AppointmentBean();
-		
+
 		try {
 			Connection con = dbObj.connect();
 			if (con == null) {
 				return "Error while connecting to the database for reading.";
 			}
 			// Prepare the html table to be displayed
-			output = "<table border=\"1\"><tr><th>Appointment ID</th>" + "<th>Patient ID</th>" 
-					 + "<th>Date</th>" + "<th>Schedule Id</th></tr>";
+			output = "<table border=\"1\"><tr><th>Appointment ID</th>" + "<th>Patient ID</th>" + "<th>Date</th>"
+					+ "<th>Schedule Id</th><th>Update</th><th>Remove</th></tr>";
 			String query = "select * from appointment_doctor";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
@@ -63,16 +62,23 @@ public class Appointment {
 			while (rs.next()) {
 				String AppointmentID = Integer.toString(rs.getInt("appointmentId"));
 				String PatientID = rs.getString("patientId");
-				String DueDate =rs.getString("dueDate");
+				String DueDate = rs.getString("dueDate");
 				String ScheduleId = Integer.toString(rs.getInt("scheduleId"));
-				//String Status = rs.getString("status");
-				
+				// String Status = rs.getString("status");
+
 				// Add into the html table
 				output += "<tr><td>" + AppointmentID + "</td>";
 				output += "<td>" + PatientID + "</td>";
 				output += "<td>" + DueDate + "</td>";
 				output += "<td>" + ScheduleId + "</td>";
-				//output += "<td>" + Status + "</td>";
+				// output += "<td>" + Status + "</td>";
+
+				//buttons 
+				output += "<td><input name=\"btnUpdate\" type=\"button\"value=\"Update\"></td>\r\n" 
+				+ "<td><form method=\"post\"action=\"Appointments.jsp\">" 
+				+ "<input name=\"btnRemove\" type=\"submit\"value=\"Remove\"class=\"btn btndanger\">" 
+				+ "<input name=\"appointmentId\" type=\"hidden\" value=\"" + AppointmentID + "\">" 
+				+ "</form></td></tr>";
 			}
 			con.close();
 			// Complete the html table
@@ -84,37 +90,34 @@ public class Appointment {
 		return output;
 	}
 
-	//method to update details
-	public String updateDetails(String AppointmentID, String PatientID,  String DueDate, String ScheduleId)
-	 {
-	 String output = "";
-	 try
-	 {
-	 Connection con = dbObj.connect();
-	 if (con == null)
-	 {return "Error while connecting to the database for updating."; }
-	 // create a prepared statement
-	 String query = "UPDATE appointment_doctor SET patientId=?,dueDate=?,ScheduleId=?WHERE appointmentId=?"; 
-	 PreparedStatement preparedStmt = con.prepareStatement(query);
-	 // binding values
-	 preparedStmt.setString(1, PatientID);
-	 preparedStmt.setString(2, DueDate);
-	 preparedStmt.setString(3, ScheduleId); 
-	 preparedStmt.setInt(4, Integer.parseInt(AppointmentID));
-	 // execute the statement
-	 preparedStmt.execute();
-	 con.close();
-	 output = "Updated successfully";
-	 }
-	 catch (Exception e)
-	 {
-	 output = "Error while updating the details.Can't update a child row";
-	 System.err.println(e.getMessage());
-	 }
-	 return output;
-	 }
+	// method to update details
+	public String updateDetails(String AppointmentID, String PatientID, String DueDate, String ScheduleId) {
+		String output = "";
+		try {
+			Connection con = dbObj.connect();
+			if (con == null) {
+				return "Error while connecting to the database for updating.";
+			}
+			// create a prepared statement
+			String query = "UPDATE appointment_doctor SET patientId=?,dueDate=?,ScheduleId=?WHERE appointmentId=?";
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+			// binding values
+			preparedStmt.setString(1, PatientID);
+			preparedStmt.setString(2, DueDate);
+			preparedStmt.setString(3, ScheduleId);
+			preparedStmt.setInt(4, Integer.parseInt(AppointmentID));
+			// execute the statement
+			preparedStmt.execute();
+			con.close();
+			output = "Updated successfully";
+		} catch (Exception e) {
+			output = "Error while updating the details.Can't update a child row";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
 
-	//method to delete details
+	// method to delete details
 	public String deleteDetails(String AppointmentID) {
 		String output = "";
 		try {
@@ -137,28 +140,27 @@ public class Appointment {
 		}
 		return output;
 	}
-	
-	//search appointments by ID	
-	
+
+	// search appointments by ID
+
 	// view list of appointments
-	public List<AppointmentBean> viewAppointments() {		
-		return	viewAppointments(null);
+	public List<AppointmentBean> viewAppointments() {
+		return viewAppointments(null);
 	}
-	
+
 	// show appointments by ID
 	public AppointmentBean ShowAppointmentById(String id) {
-	List<AppointmentBean> list =viewAppointments(id);
-		if(!list.isEmpty()) {
-			return	list.get(0);
+		List<AppointmentBean> list = viewAppointments(id);
+		if (!list.isEmpty()) {
+			return list.get(0);
 		}
 		return null;
 	}
-			
-	//view method
+
+	// view method
 	public List<AppointmentBean> viewAppointments(String id) {
-		List <AppointmentBean> AppList = new ArrayList<>();
-		try 
-		{
+		List<AppointmentBean> AppList = new ArrayList<>();
+		try {
 			Connection con = dbObj.connect();
 			if (con == null) {
 				System.out.println("Error While reading from database");
@@ -166,39 +168,34 @@ public class Appointment {
 			}
 
 			String query;
-			
-			if(id==null) {
-			query = "select * from appointment_doctor";
-			}
-			else {
-				query = "select * from appointment_doctor where patientId="+id;	
+
+			if (id == null) {
+				query = "select * from appointment_doctor";
+			} else {
+				query = "select * from appointment_doctor where patientId=" + id;
 			}
 			Statement stmt = con.createStatement();
 			ResultSet results = stmt.executeQuery(query);
 
 			while (results.next()) {
-				AppointmentBean type = new AppointmentBean(
-					results.getInt("appointmentid"),
-					results.getString("patientid"),
-					results.getString("dueDate"),
-					results.getInt("scheduleid")
-					//results.getBoolean("status")
+				AppointmentBean type = new AppointmentBean(results.getInt("appointmentid"),
+						results.getString("patientid"), results.getString("dueDate"), results.getInt("scheduleid")
+				// results.getBoolean("status")
 				);
 				AppList.add(type);
 			}
 			con.close();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println("Error While Reading");
 			System.err.println(e.getMessage());
-		}		
+		}
 		return AppList;
 	}
-	
+
 	public List<AppointmentBean> View_Appointments_By_given_ID(String pid) {
 		List<AppointmentBean> ScheduleBeanlist = new ArrayList<>();
 		for (AppointmentBean sch : viewAppointments()) {
-			if (pid.equals(sch.getPatientid())) {				
+			if (pid.equals(sch.getPatientid())) {
 				ScheduleBeanlist.add(sch);
 			}
 		}
