@@ -13,7 +13,7 @@ public class Appointment {
 	DBConnection dbObj = new DBConnection();
 		
 	//method to insert data
-	public String insertDetails(String PatientID, String DueDate, int ScheduleId) {
+	public String insertDetails(String PatientID, String DueDate, String ScheduleId) {
 		String output = "";
 		try {
 			Connection con = dbObj.connect();
@@ -28,7 +28,7 @@ public class Appointment {
 			preparedStmt.setInt(1, 0);
 			preparedStmt.setString(2, PatientID);
 			preparedStmt.setString(3, DueDate);
-			preparedStmt.setInt(4, ScheduleId);
+			preparedStmt.setString(4, ScheduleId);
 			//preparedStmt.setBoolean(5, false);
 									
 			// execute the statement 			

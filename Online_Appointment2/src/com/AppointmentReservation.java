@@ -24,7 +24,7 @@ import com.google.gson.*;
 import org.jsoup.*;
 import org.jsoup.parser.*;
 import org.jsoup.nodes.Document;
-
+/*
 @Path("/Appointment")
 public class AppointmentReservation {
 	Appointment appObj = new Appointment();
@@ -127,4 +127,5 @@ public class AppointmentReservation {
 	return output;
 	}
 }
+	*/
 
