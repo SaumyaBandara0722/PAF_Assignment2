@@ -11,7 +11,7 @@ $(document).ready(function()
 //Save button 
 $(document).on("click", "#btnSave", function(event)
 {
-	// Clear status msges
+	// Clear status msgesx
 	$("#alertSuccess").text("");
 	$("#alertSuccess").hide();
 	$("#alertError").text("");
@@ -38,46 +38,38 @@ $(document).on("click", "#btnSave", function(event)
 			 dataType : "text",
 			 complete : function(response, status)
 			 {
-			 onItemSaveComplete(response.responseText, status);
+				 onItemSaveComplete(response.responseText, status);
 			 }
 			});
 });
+
 function onItemSaveComplete(response, status)
 {
 	if (status == "success")
-	 {
-	 var resultSet = JSON.parse(response);
-	 if (resultSet.status.trim() == "success")
-	 {
-	 $("#alertSuccess").text("Successfully saved.");
-	 $("#alertSuccess").show();
-	 $("#divItemsGrid").html(resultSet.data);
-	 } else if (resultSet.status.trim() == "error")
-	 {
-	 $("#alertError").text(resultSet.data);
-	 $("#alertError").show();
-	 }
-	 } else if (status == "error")
-	 {
-	 $("#alertError").text("Error while saving.");
-	 $("#alertError").show();
-	 } else
-	 {
-	 $("#alertError").text("Unknown error while saving..");
-	 $("#alertError").show();
-	 }
-	 $("#hidAppointmentIDSave").val("");
-	 $("#formAppointment")[0].reset(); 
+	{
+		var resultSet = JSON.parse(response);
+		if (resultSet.status.trim() == "success")
+		{
+			$("#alertSuccess").text("Successfully saved.");
+			$("#alertSuccess").show();
+			$("#divItemsGrid").html(resultSet.data);
+		} else if (resultSet.status.trim() == "error")
+		{
+			$("#alertError").text(resultSet.data);
+			$("#alertError").show();
+		}
+	} else if (status == "error")
+	{
+		$("#alertError").text("Error while saving.");
+		$("#alertError").show();
+	} else
+	{
+		$("#alertError").text("Unknown error while saving..");
+		$("#alertError").show();
+	}
+	$("#hidAppointmentIDSave").val("");
+	$("#formAppointment")[0].reset(); 
 }
-//update button
-$(document).on("click", ".btnUpdate", function(event)
-{
-	$("#hidAppointmentIDSave").val($(this).closest("tr").find('#hidAppointmentIDUpdate').val());
-	$("#appointmentId").val($(this).closest("tr").find('td:eq(0)').text());
-	$("#patientId").val($(this).closest("tr").find('td:eq(1)').text());
-	$("#dueDate").val($(this).closest("tr").find('td:eq(2)').text());
-	$("#scheduleId").val($(this).closest("tr").find('td:eq(3)').text());
-});
 
 //CLIENTMODEL
 function validateItemForm()
@@ -105,3 +97,62 @@ function validateItemForm()
 	return true;
 }
 
+//update button
+$(document).on("click", ".btnUpdate", function(event)
+{
+	$("#hidAppointmentIDSave").val($(this).closest("tr").find('#hidAppointmentIDUpdate').val());
+	$("#appointmentId").val($(this).closest("tr").find('td:eq(0)').text());
+	$("#patientId").val($(this).closest("tr").find('td:eq(1)').text());
+	$("#dueDate").val($(this).closest("tr").find('td:eq(2)').text());
+	$("#scheduleId").val($(this).closest("tr").find('td:eq(3)').text());
+});
+
+//DELETE
+$(document).on("click", ".btnRemove", function(event) {  
+	
+	$.ajax(  {   
+		
+		url : "AppointmentAPI",   
+		type : "DELETE",   
+		data : "AppointmentID=" + $(this).data("itemid"),   
+		dataType : "text",   
+		complete : function(response, status)   {    
+			onItemDeleteComplete(response.responseText, status);   
+			
+		}  
+	}); 
+	
+}); 
+
+function onItemDeleteComplete(response, status) {  
+	
+	if (status == "success")  {   
+		
+		var resultSet = JSON.parse(response); 
+
+			if (resultSet.status.trim() == "success")   {    
+				
+				$("#alertSuccess").text("Successfully deleted.");    
+				$("#alertSuccess").show(); 
+				$("#divItemsGrid").html(resultSet.data);   
+				
+			} else if (resultSet.status.trim() == "error")   {    
+				
+				$("#alertError").text(resultSet.data);    
+				$("#alertError").show();   
+				
+			} 
+
+	} else if (status == "error")  {   
+		
+		$("#alertError").text("Error while deleting.");   
+		$("#alertError").show();  
+		
+	} else  {   
+		
+		$("#alertError").text("Unknown error while deleting..");   
+		$("#alertError").show();  
+		
+	} 
+	
+}

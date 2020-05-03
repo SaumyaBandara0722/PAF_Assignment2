@@ -33,7 +33,26 @@ public class AppointmentAPI extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
- // Convert request parameters to a Map
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String output = appObj.insertDetails(request.getParameter("patientId"),
+				request.getParameter("dueDate"),
+				request.getParameter("scheduleId"));
+				response.getWriter().write(output); 
+		doGet(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
+	 */
+	// Convert request parameters to a Map
     private static Map getParasMap(HttpServletRequest request)
     {
      Map<String, String> map = new HashMap<String, String>();
@@ -55,30 +74,10 @@ public class AppointmentAPI extends HttpServlet {
     	 }
     	return map;
     }
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-		String output = appObj.insertDetails(request.getParameter("patientId"),
-				request.getParameter("dueDate"),
-				request.getParameter("scheduleId"));
-				//request.getParameter("itemDesc"));
-				response.getWriter().write(output); 
-	}
-
-	/**
-	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
-	 */
+    
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map paras = getParasMap(request);
+		
 		String output = appObj.updateDetails(paras.get("hidAppointmentIDSave").toString(),
 		paras.get("patientId").toString(),
 		paras.get("dueDate").toString(),
