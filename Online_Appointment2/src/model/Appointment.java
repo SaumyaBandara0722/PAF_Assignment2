@@ -29,14 +29,19 @@ public class Appointment {
 			preparedStmt.setString(2, PatientID);
 			preparedStmt.setString(3, DueDate);
 			preparedStmt.setString(4, ScheduleId);
-			// preparedStmt.setBoolean(5, false);
 
 			// execute the statement
 			preparedStmt.execute();
-			output = "Inserted successfully";
+			//output = "Inserted successfully";
+			con.close();
+			
+			String newItems = readDetails();
+			output = "{\"status\":\"success\", \"data\": \"" +
+			newItems + "\"}"; 
 
 		} catch (Exception e) {
-			output = "Error while inserting.Can't add a child row";
+			//output = "Error while inserting.Can't add a child row";
+			output = "{\"status\":\"error\", \"data\":\"Error while inserting the item.\"}"; 
 			System.err.println(e.getMessage());
 		}
 		return output;
@@ -66,19 +71,25 @@ public class Appointment {
 				String ScheduleId = Integer.toString(rs.getInt("scheduleId"));
 
 				// Add into the html table
-				output += "<tr><td><input id=\"hidAppointmentIDUpdate\" name=\"hidAppointmentIDUpdate\" type=\"hidden\" value=\"" + AppointmentID + "\">"
-					+ "</td>";
-				output += "<tr><td>" + AppointmentID + "</td>";
+				output += "<tr><td><input id='hidAppointmentIDUpdate' name='hidAppointmentIDUpdate' type='hidden'value='" + AppointmentID + "</td>"; 
+				output += "<td>" + AppointmentID + "</td>";
 				output += "<td>" + PatientID + "</td>";
 				output += "<td>" + DueDate + "</td>";
 				output += "<td>" + ScheduleId + "</td>";
 				
 				//buttons				 
-				output +="<td><input name=\"btnUpdate\"type=\"button\" "
-						+ "value=\"Update\"class=\"btnUpdate btn btn-secondary\"></td>"
-						+ "<td><form method=\"post\" action=\"Appointments.jsp\">"
-						+ "<input name=\"btnRemove\" type=\"submit\"value=\"Remove\" class=\"btn btn-danger\">"
-						+ "<input name=\"hidAppointmentIDDelete\" type=\"hidden\"value=\"" + AppointmentID + "\">" + "</form></td></tr>"; 
+//				output +="<td><input name=\"btnUpdate\"type=\"button\" "
+//						+ "value=\"Update\"class=\"btnUpdate btn btn-secondary\"></td>"
+//						+ "<td><form method=\"post\" action=\"Appointments.jsp\">"
+//						+ "<input name=\"btnRemove\" type=\"submit\"value=\"Remove\" class=\"btn btn-danger\">"
+//						+ "<input name=\"hidAppointmentIDDelete\" type=\"hidden\"value=\"" + AppointmentID + "\">" + "</form></td></tr>"; 
+				output += "<td><input name='btnUpdate' type='button'"
+						+ "value='Update'"
+						+ "class='btnUpdate btn btn-secondary'></td>"
+						+ "<td><input name='btnRemove' type='button'"
+						+ "value='Remove'"
+						+ "class='btnRemove btn btn-danger' data-itemid='"
+						+AppointmentID + "'>" + "</td></tr>"; 
 			}
 			con.close();
 			// Complete the html table

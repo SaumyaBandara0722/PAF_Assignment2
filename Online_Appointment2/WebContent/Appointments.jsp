@@ -51,6 +51,9 @@ if (request.getParameter("hidAppointmentIDDelete") != null)
 <title>Appointments Management</title>
 </head>
 <body>
+<div class="container">
+<div class="row">
+<div class="col-10">
 	<h1>Appointment Management</h1>
 	<form id="formAppointment" name="formAppointment" method="post" action="Appointments.jsp">
  	Appointment ID:
@@ -66,12 +69,17 @@ if (request.getParameter("hidAppointmentIDDelete") != null)
 	<input type="hidden" id="hidAppointmentIDSave" name="hidAppointmentIDSave" value="">
 	</form>
 	<br>
-	<div id="alertSuccess" class="alert alert-success"><% out.print(session.getAttribute("statusMsg")); %></div>
+	<div id="alertSuccess" class="alert alert-success"></div>
 	<div id="alertError" class="alert alert-danger"></div>
 	<br>
-	<%
-		Appointment appObj = new Appointment();
-		out.print(appObj. readDetails());
-	%>
+	<div id="divItemsGrid">
+		<%
+			Appointment appObj = new Appointment();
+			out.print(appObj. readDetails());
+		%>
+	</div>
+</div>
+</div>
+</div>
 </body>
 </html>
