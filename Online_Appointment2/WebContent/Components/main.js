@@ -1,56 +1,68 @@
 // hide the divisions used to show the status messages on the page load
 $(document).ready(function()
 {
-	$("#alertSuccess").hide();
-	$("#alertError").hide();
+	if ($("#alertSuccess").text().trim() == "")
+	{
+		$("#alertSuccess").hide();
+	}
+	$("#alertError").hide(); 
 }); 
 
-//add an event handler for the Save button 
-$(document).on("click", "#btnSubmit", function(event)
-		{
-		// Clear status msges-------------
-		 $("#alertSuccess").text("");
-		 $("#alertSuccess").hide();
-		 $("#alertError").text("");
-		 $("#alertError").hide();
-		// Form validation----------------
-		var status = validateItemForm();
-		// If not valid-------------------
-		if (status != true)
-		 {
-		 $("#alertError").text(status);
-		 $("#alertError").show();
-		 return;
-		 }
-		// If valid-----------------------
-		var appointment = getAppCard($("#txtAppointmentId").val().trim(),
-		 $("#txtPatientId").val().trim(),
-		 $("#txtDueDate").val().trim(),
-		 $("#ddlSchedule").val());
-		 $("#colApp").append(student);
+//Save button 
+$(document).on("click", "#btnSave", function(event)
+{
+	// Clear status msges
+	$("#alertSuccess").text("");
+	$("#alertSuccess").hide();
+	$("#alertError").text("");
+	$("#alertError").hide();
+		 
+	// Form validation
+	var status = validateItemForm();
+	if (status != true)
+	{
+		$("#alertError").text(status);
+		$("#alertError").show();
+		return;
+	}
+	
+	// If valid
+	$("#formAppointment").submit();
+});
 
-		 $("#alertSuccess").text("Saved successfully.");
-		 $("#alertSuccess").show();
+//update button
+$(document).on("click", ".btnUpdate", function(event)
+{
+	$("#hidAppointmentIDSave").val($(this).closest("tr").find('#hidAppointmentIDUpdate').val());
+	$("#appointmentId").val($(this).closest("tr").find('td:eq(0)').text());
+	$("#patientId").val($(this).closest("tr").find('td:eq(1)').text());
+	$("#dueDate").val($(this).closest("tr").find('td:eq(2)').text());
+	$("#scheduleId").val($(this).closest("tr").find('td:eq(3)').text());
+});
 
-		 $("#formAppointment")[0].reset();
-		});
-
+//CLIENTMODEL
 function validateItemForm()
 {
-	//Validations
-	if ($("#txtPatientId").val().trim() == "")
-	 {
-	 return "Insert Patient ID";
-	 }
-	
-	if ($("txtDueDate").val().trim() == "")
-	 {
-	 return "Insert A Date";
-	 }
-	
-	if ($("#ddlSchedule").val() == "0")
-	 {
-	 return "Select A Schedule ID";
-	 } 
+	if ($("#patientId").val().trim() == "")
+	{
+		return "Insert Patient Id";
+	}
+
+	if ($("#dueDate").val().trim() == "")
+	{
+		return "Insert Date";
+	} 
+	if ($("#scheduleId").val().trim() == "")
+	{
+		return "Insert Schedule Id";
+	}
+//	// is numerical value
+//		var tmpPrice = $("#itemPrice").val().trim();
+//		if (!$.isDate(tmpPrice))
+//		{
+//			return "Insert a numerical value for Item Price.";
+//		}
+
 	return true;
 }
+

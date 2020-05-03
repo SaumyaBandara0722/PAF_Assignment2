@@ -3,22 +3,44 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%
-	if (request.getParameter("appointmentId") != null) {	  
-		Appointment appObj = new Appointment();
-		String stsMsg = appObj.insertDetails(request.getParameter("patientId"),     
-				request.getParameter("dueDate"),     
-				request.getParameter("scheduleId"));
+//Initialize---------------------
+session.setAttribute("stsMsg", "");
+System.out.println("Trying to process");
+
+//Save---------------------------------
+if (request.getParameter("patientId") != null)
+{
+	Appointment appObj = new Appointment();
+	String stsMsg = ""; 
 		
-		 session.setAttribute("statusMsg", stsMsg); 
-	}
-	//Delete item----------------------------------
-	if (request.getParameter("appointmentId") != null)
+	//Insert--------------------------
+	if (request.getParameter("hidAppointmentIDSave") == "")
 	{
-		Appointment appObj = new Appointment();
-		String stsMsg = appObj.deleteDetails(request.getParameter("appointmentId"));
-		session.setAttribute("statusMsg", stsMsg);
+		stsMsg = appObj.insertDetails(request.getParameter("patientId"),
+		request.getParameter("dueDate"),
+		request.getParameter("scheduleId"));
 	}
+	else//Update----------------------
+	{
+		stsMsg = appObj.updateDetails(request.getParameter("hidAppointmentIDSave"),
+		//request.getParameter("itemDesc"),
+		request.getParameter("patientId"),
+		request.getParameter("dueDate"),
+		request.getParameter("scheduleId"));
+		
+	}
+	session.setAttribute("statusMsg", stsMsg);
+}
+
+//Delete-----------------------------
+if (request.getParameter("hidAppointmentIDDelete") != null)
+{
+	Appointment appObj = new Appointment();
+	String stsMsg = appObj.deleteDetails(request.getParameter("hidAppointmentIDDelete"));
+	session.setAttribute("statusMsg", stsMsg);
+}
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,5 +67,11 @@
 	</form>
 	<br>
 	<div id="alertSuccess" class="alert alert-success"><% out.print(session.getAttribute("statusMsg")); %></div>
+	<div id="alertError" class="alert alert-danger"></div>
+	<br>
+	<%
+		Appointment appObj = new Appointment();
+		out.print(appObj. readDetails());
+	%>
 </body>
 </html>
