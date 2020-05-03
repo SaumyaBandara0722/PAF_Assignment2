@@ -40,7 +40,6 @@ if (request.getParameter("hidAppointmentIDDelete") != null)
 	session.setAttribute("statusMsg", stsMsg);
 }
 %>
-
 <!DOCTYPE html>
 <html>
 <head>
