@@ -120,9 +120,15 @@ public class Appointment {
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
-			output = "Updated successfully";
+			
+			//output = "Updated successfully";
+			String newItems = readDetails();
+			output = "{\"status\":\"success\", \"data\": \"" +
+			newItems + "\"}"; 
+			 
 		} catch (Exception e) {
-			output = "Error while updating the details.Can't update a child row";
+			//output = "Error while updating the details.Can't update a child row";
+			output = "{\"status\":\"error\", \"data\":\"Error while updating the item.\"}"; 
 			System.err.println(e.getMessage());
 		}
 		return output;
@@ -144,9 +150,15 @@ public class Appointment {
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
-			output = "Deleted successfully";
+			
+			//output = "Deleted successfully";
+			String newItems = readDetails();
+			output = "{\"status\":\"success\", \"data\": \"" +
+			newItems + "\"}"; 
+			
 		} catch (Exception e) {
-			output = "Error while deleting the details.";
+			//output = "Error while deleting the details.";
+			output = "{\"status\":\"error\", \"data\":\"Error while deleting the item.\"}"; 
 			System.err.println(e.getMessage());
 		}
 		return output;
