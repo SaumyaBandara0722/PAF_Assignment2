@@ -24,31 +24,26 @@
 <head>
 <meta charset="ISO-8859-1">
 <link rel="stylesheet" href="Views/bootstrap.min.css">
+<script src="Components/jquery-3.5.0.min.js"></script>
+<script src="Components/main.js"></script>
 <title>Appointments Management</title>
 </head>
 <body>
-<div class="container">
- 	<div class="row">
-		 <div class="col">
-			<h1>Appointment Management</h1>
-			<form method="post" action="Appointments.jsp">
-			Appointment ID: <input name="appointmentId" type="text" class="form-control"><br>
-			Patient ID: <input name="patientId" type="text" class="form-control"><br>
-			Due Date: <input name="dueDate" type="text" class="form-control"><br>
-			Schedule ID: <input name="scheduleId" type="text" class="form-control"><br> 
-			<input name="btnSubmit" type="submit" value="Save" class="btn btn-primary">
-			</form>
-			<br>
-		<div class="alert alert-success">
-			<% out.print(session.getAttribute("statusMsg")); %>
-		</div> 
-			<br>
-			<%
-				Appointment appObj = new Appointment();
-				out.print(appObj.readDetails()); 
-			%>
-		</div>
-	</div>
-</div>	
+	<h1>Appointment Management</h1>
+	<form id="formAppointment" name="formAppointment" method="post" action="Appointments.jsp">
+ 	Appointment ID:
+	<input id="appointmentId" name="appointmentId" type="text"class="form-control form-control-sm">
+	<br> Patient ID:
+	<input id="patientId" name="patientId" type="text" class="form-control form-control-sm">
+	<br> Due Date:
+	<input id="dueDate" name="dueDate" type="text" class="form-control form-control-sm">
+	<br> Schedule ID:
+	<input id="scheduleId" name="scheduleId" type="text" class="form-control form-control-sm">
+	<br>
+	<input id="btnSave" name="btnSave" type="button" value="Save" class="btn btn-primary">
+	<input type="hidden" id="hidAppointmentIDSave" name="hidAppointmentIDSave" value="">
+	</form>
+	<br>
+	<div id="alertSuccess" class="alert alert-success"><% out.print(session.getAttribute("statusMsg")); %></div>
 </body>
 </html>

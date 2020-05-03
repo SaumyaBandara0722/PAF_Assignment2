@@ -64,21 +64,24 @@ public class Appointment {
 				String PatientID = rs.getString("patientId");
 				String DueDate = rs.getString("dueDate");
 				String ScheduleId = Integer.toString(rs.getInt("scheduleId"));
-				// String Status = rs.getString("status");
 
 				// Add into the html table
+				output += "<tr><td><input id=\"hidAppointmentIDUpdate\" name=\"hidAppointmentIDUpdate\"type=\"hidden\" value=\"" + AppointmentID + "\">"
+						+ "</td>";
 				output += "<tr><td>" + AppointmentID + "</td>";
 				output += "<td>" + PatientID + "</td>";
 				output += "<td>" + DueDate + "</td>";
 				output += "<td>" + ScheduleId + "</td>";
-				// output += "<td>" + Status + "</td>";
-
+				
 				//buttons 
-				output += "<td><input name=\"btnUpdate\" type=\"button\"value=\"Update\"></td>\r\n" 
-				+ "<td><form method=\"post\"action=\"Appointments.jsp\">" 
-				+ "<input name=\"btnRemove\" type=\"submit\"value=\"Remove\"class=\"btn btndanger\">" 
-				+ "<input name=\"appointmentId\" type=\"hidden\" value=\"" + AppointmentID + "\">" 
-				+ "</form></td></tr>";
+//				output += "<td><input name=\"btnUpdate\" type=\"button\"value=\"Update\"></td>\r\n" 
+//				+ "<td><form method=\"post\"action=\"Appointments.jsp\">" 
+//				+ "<input name=\"btnRemove\" type=\"submit\"value=\"Remove\"class=\"btn btndanger\">" 
+//				+ "<input name=\"appointmentId\" type=\"hidden\" value=\"" + AppointmentID + "\">" 
+//				+ "</form></td></tr>";
+				
+				 
+				output +="<td><input name=\"btnUpdate\"type=\"button\" value=\"Update\"class=\" btnUpdate btn btn-secondary\"></td><td><form method=\"post\" action=\"Appointments.jsp\"><input name=\"btnRemove\" type=\"submit\"value=\"Remove\" class=\"btn btn-danger\"><input name=\"hidAppointmentIDDelete\" type=\"hidden\"value=\"" + AppointmentID + "\">" + "</form></td></tr>"; 
 			}
 			con.close();
 			// Complete the html table
