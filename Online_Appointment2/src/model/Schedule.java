@@ -1,6 +1,5 @@
 package model;
 
-//import bean.ScheduleBean;
 import util.DBConnection;
 
 import java.sql.Connection;
@@ -18,14 +17,14 @@ public class Schedule{
 	public String viewAllSchedule() {
 
 		String output = "";
-		//ScheduleBean docbean = new ScheduleBean();
+		
 		try {
 			Connection con = dbObj.connect();
 			if (con == null) {
 				return "Error while connecting to the database for reading.";
 			}
 			// Prepare the html table to be displayed
-			output = "<table border=\"1\"><tr><th>Schedule Id</th>"
+			output = "<table border='1'><tr><th>Schedule Id</th>"
 					+ "<th>Appointment Specification</th>"
 					+ "<th>Doctor</th>"
 					+ "<th>Hospital</th>"
