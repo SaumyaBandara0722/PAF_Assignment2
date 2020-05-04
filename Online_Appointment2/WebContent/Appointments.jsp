@@ -18,7 +18,7 @@
 				<h1>Appointment Management</h1>
 				<form id="formAppointment" name="formAppointment" method="post" action="Appointments.jsp">
  				Appointment ID:
-				<input id="appointmentId" name="appointmentId" type="text" class="form-control form-control-sm">
+				<input id="appointmentId" name="appointmentId" type="text" class="form-control form-control-sm" readonly>
 	
 				<br> Patient ID:
 				<input id="patientId" name="patientId" type="text" class="form-control form-control-sm">
