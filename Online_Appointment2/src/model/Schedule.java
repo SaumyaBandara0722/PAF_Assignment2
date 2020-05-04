@@ -1,6 +1,6 @@
 package model;
 
-import bean.ScheduleBean;
+//import bean.ScheduleBean;
 import util.DBConnection;
 
 import java.sql.Connection;
@@ -18,7 +18,7 @@ public class Schedule{
 	public String viewAllSchedule() {
 
 		String output = "";
-		ScheduleBean docbean = new ScheduleBean();
+		//ScheduleBean docbean = new ScheduleBean();
 		try {
 			Connection con = dbObj.connect();
 			if (con == null) {

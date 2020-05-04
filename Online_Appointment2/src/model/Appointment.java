@@ -1,15 +1,10 @@
 package model;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import bean.AppointmentBean;
 import util.DBConnection;
 
 public class Appointment {
 
-	Schedule sch = new Schedule();
 	DBConnection dbObj = new DBConnection();
 
 	// method to insert data
@@ -32,15 +27,13 @@ public class Appointment {
 
 			// execute the statement
 			preparedStmt.execute();
-			//output = "Inserted successfully";
 			con.close();
 			
 			String newItems = readDetails();
 			output = "{\"status\":\"success\", \"data\": \"" + newItems + "\"}"; 
 
 		} catch (Exception e) {
-			//output = "Error while inserting.Can't add a child row";
-			output = "{\"status\":\"error\", \"data\":\"Error while inserting the item.\"}"; 
+			output = "{\"status\":\"error\", \"data\":\"Error while inserting the item.Only registered user can make appointments\"}"; 
 			System.err.println(e.getMessage());
 		}
 		return output;
@@ -49,21 +42,23 @@ public class Appointment {
 	// method to read database
 	public String readDetails() {
 		String output = "";
-		AppointmentBean docbean = new AppointmentBean();
-
+		
 		try {
 			Connection con = dbObj.connect();
 			if (con == null) {
 				return "Error while connecting to the database for reading.";
 			}
 			// Prepare the html table to be displayed			
-			output = "<table border='1'><tr><th>Appointment ID</th>"
-					+"<th>Patient ID</th>"
-					+"<th>Date</th>"
-					+"<th>Schedule Id</th><th>Update</th><th>Remove</th></tr>";
+			output ="<table border='1'><tr><th>Appointment ID</th>       "
+			+ "<th>Patient ID</th><th>Date</th>"     
+			+ "<th>Schedule Id</th>        "
+			+ "<th>Update</th><th>Remove</th></tr>"; 
+			
 			String query = "select * from appointment_doctor";
+			
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
+			
 			// iterate through the rows in the result set
 			while (rs.next()) {
 				String AppointmentID = Integer.toString(rs.getInt("appointmentId"));
@@ -72,9 +67,7 @@ public class Appointment {
 				String ScheduleId = Integer.toString(rs.getInt("scheduleId"));
 
 				// Add into the html table
-				output += "<tr><td><input id='hidAppointmentIDUpdate' name='hidAppointmentIDUpdate'"
-						+ "type='hidden' value='" + AppointmentID + "</td>"; 
-				output += "<td>" + AppointmentID + "</td>";
+				output += "<tr><td><input id='hidAppointmentIDUpdate' name='hidAppointmentIDUpdate' type='hidden' value='" + AppointmentID + "'>" + AppointmentID + "</td>"; 
 				output += "<td>" + PatientID + "</td>";
 				output += "<td>" + DueDate + "</td>";
 				output += "<td>" + ScheduleId + "</td>";
@@ -119,8 +112,7 @@ public class Appointment {
 			output = "{\"status\":\"success\", \"data\": \"" + newItems + "\"}"; 
 			 
 		} catch (Exception e) {
-			//output = "Error while updating the details.Can't update a child row";
-			output = "{\"status\":\"error\", \"data\":\"Error while updating the item.\"}"; 
+			output = "{\"status\":\"error\", \"data\":\"Error while updating the item.Can't update a child row\"}"; 
 			System.err.println(e.getMessage());
 		}
 		return output;
@@ -143,76 +135,13 @@ public class Appointment {
 			preparedStmt.execute();
 			con.close();
 			
-			//output = "Deleted successfully";
 			String newItems = readDetails();
 			output = "{\"status\":\"success\", \"data\": \"" + newItems + "\"}"; 
 			
 		} catch (Exception e) {
-			//output = "Error while deleting the details.";
 			output = "{\"status\":\"error\", \"data\":\"Error while deleting the item.\"}"; 
 			System.err.println(e.getMessage());
 		}
 		return output;
-	}
-
-	// search appointments by ID
-
-	// view list of appointments
-	public List<AppointmentBean> viewAppointments() {
-		return viewAppointments(null);
-	}
-
-	// show appointments by ID
-	public AppointmentBean ShowAppointmentById(String id) {
-		List<AppointmentBean> list = viewAppointments(id);
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
-		return null;
-	}
-
-	// view method
-	public List<AppointmentBean> viewAppointments(String id) {
-		List<AppointmentBean> AppList = new ArrayList<>();
-		try {
-			Connection con = dbObj.connect();
-			if (con == null) {
-				System.out.println("Error While reading from database");
-				return AppList;
-			}
-
-			String query;
-
-			if (id == null) {
-				query = "select * from appointment_doctor";
-			} else {
-				query = "select * from appointment_doctor where patientId=" + id;
-			}
-			Statement stmt = con.createStatement();
-			ResultSet results = stmt.executeQuery(query);
-
-			while (results.next()) {
-				AppointmentBean type = new AppointmentBean(results.getInt("appointmentid"),
-						results.getString("patientid"), results.getString("dueDate"), results.getInt("scheduleid")
-				// results.getBoolean("status")
-				);
-				AppList.add(type);
-			}
-			con.close();
-		} catch (Exception e) {
-			System.out.println("Error While Reading");
-			System.err.println(e.getMessage());
-		}
-		return AppList;
-	}
-
-	public List<AppointmentBean> View_Appointments_By_given_ID(String pid) {
-		List<AppointmentBean> ScheduleBeanlist = new ArrayList<>();
-		for (AppointmentBean sch : viewAppointments()) {
-			if (pid.equals(sch.getPatientid())) {
-				ScheduleBeanlist.add(sch);
-			}
-		}
-		return ScheduleBeanlist;
 	}
 }
