@@ -33,7 +33,7 @@ public class Appointment {
 			output = "{\"status\":\"success\", \"data\": \"" + newItems + "\"}"; 
 
 		} catch (Exception e) {
-			output = "{\"status\":\"error\", \"data\":\"Error while inserting the item.Only registered user can make appointments\"}"; 
+			output = "{\"status\":\"error\", \"data\":\"Error while inserting the item.\"}"; 
 			System.err.println(e.getMessage());
 		}
 		return output;
@@ -112,7 +112,7 @@ public class Appointment {
 			output = "{\"status\":\"success\", \"data\": \"" + newItems + "\"}"; 
 			 
 		} catch (Exception e) {
-			output = "{\"status\":\"error\", \"data\":\"Error while updating the item.Can't update a child row\"}"; 
+			output = "{\"status\":\"error\", \"data\":\"Error while updating the item.\"}"; 
 			System.err.println(e.getMessage());
 		}
 		return output;

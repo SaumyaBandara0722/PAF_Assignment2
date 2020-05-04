@@ -93,7 +93,7 @@ function validateItemForm()
 //		{
 //			return "Insert a numerical value for Item Price.";
 //		}
-
+	
 	return true;
 }
 
