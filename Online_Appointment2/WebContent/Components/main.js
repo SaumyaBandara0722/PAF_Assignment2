@@ -87,13 +87,7 @@ function validateItemForm()
 	{
 		return "Insert Schedule Id";
 	}
-//	// is numerical value
-//		var tmpPrice = $("#itemPrice").val().trim();
-//		if (!$.isDate(tmpPrice))
-//		{
-//			return "Insert a numerical value for Item Price.";
-//		}
-	
+
 	return true;
 }
 
